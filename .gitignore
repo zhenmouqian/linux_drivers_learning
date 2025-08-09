@@ -1,0 +1,6 @@
+*.cmd
+*.order
+*.symvers
+*.o
+*.mod*
+/.tmp_sersions
