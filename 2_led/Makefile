@@ -1,4 +1,4 @@
-NAME 			:= chrdevbase
+NAME 			:= led
 NAME_KO 		:= $(NAME)
 NAME_APP 		:= $(NAME)APP
 CROSS_COMPILE 	:= arm-linux-gnueabihf-
@@ -12,7 +12,6 @@ build: kernel_modules
 
 kernel_modules:
 	$(MAKE) -C $(KERNELDIR) M=$(CURRENT_PATH) modules
-
 app: $(NAME_APP).o
 	$(CC) $^ -o $(NAME_APP)
 

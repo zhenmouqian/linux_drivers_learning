@@ -1,27 +1,32 @@
 #include <linux/module.h>
 #include <linux/fs.h>
+#include <linux/uaccess.h>
+
 #define CHRDEVBASE_MAJOR 1000
 #define CHRDEVBASE_NAME "chrdev"
-
+static char kerneldata[100] = "kernel data";
+static char writebuf[100];
 int chrdevbase_open(struct inode *inode, struct file *flip)
 {
-    printk("i am in chrdevbase_open\r\n");
+    // printk("i am in chrdevbase_open\r\n");
     return 0;
 }
 int chrdevbase_realse(struct inode *inode, struct file *flip)
 {
-    printk("i am in chrdevbase_realse\r\n");
+    // printk("i am in chrdevbase_realse\r\n");
     return 0;
 }
 ssize_t chrdevbase_read(struct file *flip, char __user *buf, size_t count, loff_t *off)
 {
-    printk("i am in chrdevbase_read\r\n");
-    return 0;
+    int ret = copy_to_user(buf, kerneldata, count);
+    return ret;
 }
 ssize_t chrdevbase_write(struct file *flip, const char __user *buf, size_t count, loff_t *off)
 {
-    printk("i am in chrdevbase_write\r\n");
-    return 0;
+    int ret = copy_from_user(writebuf, buf, count);
+    printk("kernel recevdata %s\r\n", writebuf);
+    memcpy(kerneldata, writebuf, sizeof(writebuf));
+    return ret;
 }
 
 static const struct file_operations ops = {
